@@ -1,0 +1,4 @@
+MAX_BLT_ELEMETS = 512;
+
+VALUE       = 0;
+MAX_VALUE   = 1;
