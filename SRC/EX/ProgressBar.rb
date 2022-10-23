@@ -8,7 +8,7 @@ texc2 = CTexture.new(Rect.new(104, 0, 104, 4), "bar",  1121)
 #Make bar class
 $GlobalBarTest = CStatusBar.new(70, 100, texc1, texc2, 1120);
 #Set position
-#There we can replace all child object for bar position
+#There we can replace all child object for bar position 
 #Its cool
 $GlobalBarTest.setPosition(250, 310)
 
