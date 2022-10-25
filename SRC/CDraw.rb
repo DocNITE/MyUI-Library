@@ -9,8 +9,6 @@
 # Global SDK
 module ViewSDK
 
-    #BLT_LIST        = Array.new(MAX_BLT_ELEMETS);
-    EMPTY_BITMAP    = Bitmap.new(Graphics.width, Graphics.height);
 
 end
 
@@ -43,7 +41,7 @@ class CDraw < CView
         @font          = Font.new();
         @alligment     = 0;
 
-        @sprite.bitmap      = ViewSDK::EMPTY_BITMAP;
+        @sprite.bitmap      = Bitmap.new(Graphics.width, Graphics.height);
         @size               = _size;
         blit
     end
@@ -65,7 +63,7 @@ class CDraw < CView
         if !@autoBlt
             return 
         end
-    
+
         tBmp = @sprite.bitmap;
         # clear previous text
         tBmp.clear

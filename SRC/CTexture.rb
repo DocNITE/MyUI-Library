@@ -43,7 +43,7 @@ class CTexture < CView
         # Define texture
         @sprite.bitmap      = Cache.normal_bitmap(texPath) if _texture != -1
         @sprite.src_rect    = _rectangle if _rectangle != -1
-        @size               = CVector2.new(_rectangle.width, _rectangle.height);
+        @size               = CVector2.new(_rectangle.width-_rectangle.x, _rectangle.height-_rectangle.y);
     end
     #--------------------------------------------------
     # * Deconstructor
