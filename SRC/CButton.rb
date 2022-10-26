@@ -30,7 +30,7 @@ class CButton < CElement
             @sprite.bitmap = Cache.normal_bitmap(@idleTex)
         end
 
-        @prevMbId   = -1;
+        @prevMbId   = 0;
     end
     #--------------------------------------------------
     # * Deconstructor

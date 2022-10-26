@@ -62,7 +62,7 @@ end
 
 # Mouse
 $PreviousElement = nil;
-$PreviousButton = -1;
+$PreviousButton = false;
 MAX_UI_MD_ELEMENTS = 64;
 module MouseDetector
 
