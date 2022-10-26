@@ -152,13 +152,13 @@ class CView < CBase
         @sprite.src_rect.width = _val;
         @size =  CVector2.new(_val, @size.y);
 
-        UpdateChildSize()
+        #UpdateChildSize()
     end
     def height=(_val)
         @sprite.src_rect.height = _val;
         @size = CVector2.new(@size.x, _val);
 
-        UpdateChildSize()
+        #UpdateChildSize()
     end
     def position=(_coord)
         if @parent == NULL || @parent == nil
@@ -178,7 +178,7 @@ class CView < CBase
         @sprite.src_rect.height = _coord.y;
         @size = _coord;
 
-        UpdateChildSize()
+        #UpdateChildSize()
     end
     def color=(_col)
         @sprite.color = _col;

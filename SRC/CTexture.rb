@@ -55,8 +55,8 @@ class CTexture < CView
     # * Set Rectangle
     #    _rect : class Rect
     #--------------------------------------------------
-    def setRect(_rect)
-        @sprite.src_rect = _rect;
+    def setRect(_x, _y)
+        @sprite.src_rect = Rect.new(_x, _y, @size.x, @size.y);
     end
     #--------------------------------------------------
     # * Set Texture
