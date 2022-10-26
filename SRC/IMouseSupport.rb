@@ -35,7 +35,7 @@ module EventSDK
         if !EVENTS.empty?
             EVENTS.each {|event| 
                 if event.name == name
-                    msgbox name + " Hey wtf man"
+                    #msgbox name + " Hey wtf man"
                     event.addAddr(func);
                     return;
                 end
@@ -111,11 +111,16 @@ module Input
 	end
 end
 
+MX = 0;
+MY = 1;
+
 class Scene_Base
 
 	alias myui_mouse_detector update_basic
 	def update_basic
 		myui_mouse_detector
+
+        EventSDK.callEvent("onRender");
 
         #return Mouse.ForceIdle if Input.MouseWheelForceIdle?  
 		return if !Mouse.enable?
@@ -127,7 +132,7 @@ class Scene_Base
             next if MouseDetector::DETECTORS[i] == nil
             if (local_Element == -1 || MouseDetector::DETECTORS[i].order > local_Element.order) && 
                 (MouseDetector::DETECTORS[i].visible == true) &&
-                (Mouse.within_XYWH?(MouseDetector::DETECTORS[i].position.x, MouseDetector::DETECTORS[i].position.y, MouseDetector::DETECTORS[i].size.x, MouseDetector::DETECTORS[i].size.y))
+                (MouseDetector::DETECTORS[i].within(Mouse.pos?[MX], Mouse.pos?[MY]))
 
                 local_Element = MouseDetector::DETECTORS[i];
             end

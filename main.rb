@@ -49,3 +49,4 @@ import("SRC/CProgressBar.rb");
 #import("SRC/EX/Draw.rb");
 
 #import("SRC/EX/ProgressBar.rb");
+import("SRC/EX/Window.rb");

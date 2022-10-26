@@ -19,14 +19,16 @@ class CButton < CElement
     #--------------------------------------------------
     # * Constructor
     #--------------------------------------------------
-    def initialize(_size, _idle=-1, _focus=-1, _pressed=-1, _z = System_Settings::MAP_HUD_Z)
+    def initialize(_size, _idle=false, _focus=false, _pressed=false, _z = System_Settings::MAP_HUD_Z)
         super(_size, _z)
         # Texture
         @idleTex    = _idle
         @focusTex   = _focus
         @pressedTex = _pressed
 
-        @sprite.bitmap = Cache.normal_bitmap(@idleTex)
+        if @idleTex != false
+            @sprite.bitmap = Cache.normal_bitmap(@idleTex)
+        end
 
         @prevMbId   = -1;
     end
@@ -48,11 +50,17 @@ class CButton < CElement
             case mb_state[1]
 
             when MouseDetector::MB_IDLE
-                @sprite.bitmap = Cache.normal_bitmap(@idleTex)
+                if @idleTex != false
+                    @sprite.bitmap = Cache.normal_bitmap(@idleTex)
+                end
             when MouseDetector::MB_FOCUSED
-                @sprite.bitmap = Cache.normal_bitmap(@focusTex)
+                if @focusTex != false
+                    @sprite.bitmap = Cache.normal_bitmap(@focusTex)
+                end
             when MouseDetector::MB_PRESSED
-                @sprite.bitmap = Cache.normal_bitmap(@pressedTex)
+                if @pressedTex != false
+                    @sprite.bitmap = Cache.normal_bitmap(@pressedTex)
+                end
             else
 
             end

@@ -41,7 +41,7 @@ class CDraw < CView
         @font          = Font.new();
         @alligment     = 0;
 
-        @sprite.bitmap      = Bitmap.new(Graphics.width, Graphics.height);
+        @sprite.bitmap      = Bitmap.new(Graphics.width/2, Graphics.height/2);
         @size               = _size;
         blit
     end
@@ -71,7 +71,8 @@ class CDraw < CView
         if tBmp.font != @font
             tBmp.font = font;
         end
-		tBmp.draw_text(@position.x, @position.y, @size.x, @size.y, @text, alligment)
+
+		tBmp.draw_text(0, 0, @size.x, @size.y, @text, alligment)
     end
     #--------------------------------------------------
     # * Set Text
@@ -95,7 +96,17 @@ class CDraw < CView
         blit
     end
     def position=(_coord)
-        @position = _coord;
+        if @parent == NULL || @parent == nil
+            @sprite.x = _coord.x;
+            @sprite.y = _coord.y;
+            @position = _coord;
+        else
+            @sprite.x = @parent.sprite.x + _coord.x;
+            @sprite.y = @parent.sprite.y + _coord.y;
+            @position = _coord;
+        end
+
+        UpdateChildPosition()
         blit
     end
 end

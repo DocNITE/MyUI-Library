@@ -94,7 +94,9 @@ class CView < CBase
 
         @childs.each.with_index(0) do |key, value|
             if value != nil
-                @childs[value].position = @position + @childs[value].position;
+                @childs[value].position = @childs[value].position;
+                #@childs[value].sprite.x = @sprite.x + @childs[value].position.x;
+                #@childs[value].sprite.y = @sprite.y + @childs[value].position.y;
             end
         end
     end
@@ -159,9 +161,15 @@ class CView < CBase
         UpdateChildSize()
     end
     def position=(_coord)
-        @sprite.x = _coord.x;
-        @sprite.y = _coord.y;
-        @position = _coord;
+        if @parent == NULL || @parent == nil
+            @sprite.x = _coord.x;
+            @sprite.y = _coord.y;
+            @position = _coord;
+        else
+            @sprite.x = @parent.sprite.x + _coord.x;
+            @sprite.y = @parent.sprite.y + _coord.y;
+            @position = _coord;
+        end
 
         UpdateChildPosition()
     end

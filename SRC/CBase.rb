@@ -6,6 +6,8 @@
 #  This file contain class object                        
 #==============================================================================
 
+NULL = 0;
+
 #2d pos class
 class CBase
     #--------------------------------------------------
@@ -16,7 +18,7 @@ class CBase
     #--------------------------------------------------
     # * Constructor
     #--------------------------------------------------
-    def initialize(_parent = nil, _childs = [], _x = 0, _y = 0, _size_x = 0, _size_y = 0)
+    def initialize(_parent = NULL, _childs = NULL, _x = 0, _y = 0, _size_x = 0, _size_y = 0)
         @parent         = _parent;
         @childs         = _childs;
     end
@@ -24,8 +26,10 @@ class CBase
     # * Deconstructor
     #--------------------------------------------------
     def dispose
+        return if @childs == NULL || @childs == nil
+
         @childs.each.with_index(0) do |key, value|
-            @childs[key].setParent(nil);
+            @childs[key].setParent(NULL);
             @childs[key].dispose
             @childs[key] = nil;
             @childs.sort;
@@ -35,22 +39,23 @@ class CBase
     # * Set parent for object
     #    _parent : class object
     #--------------------------------------------------
-    def setParent(_parent = -1)
-        if _parent == -1
-            return
-        end
-
+    # REMEMBER. There he used iherit element
+    def setParent(_parent = NULL)
+        #if _parent != NULL && _parent != nil
+        #    @sprite.x = @position.x + _parent.sprite.x;
+        #    @sprite.y = @position.y + _parent.sprite.y;
+        #end
         @parent = _parent;
     end
     #--------------------------------------------------
     # * Add new child for object
     #    _child : class object
     #--------------------------------------------------
-    def addChild(_child = -1)
-        if _child == -1
+    def addChild(_child = NULL)
+        if _child == NULL || _child == nil
             return
         end
-        if @childs == nil
+        if @childs == nil || @childs == NULL
             @childs = [];
         end
 
@@ -61,11 +66,11 @@ class CBase
     # * Remove child for object
     #    _child : class object
     #--------------------------------------------------
-    def removeChild(_child = -1)
-        if _child == -1
+    def removeChild(_child = NULL)
+        if _child == NULL || _child == nil
             return
         end
-        if @childs == nil
+        if @childs == nil || @childs == NULL
             return
         end
 
@@ -73,7 +78,7 @@ class CBase
             if value == _child
                 @childs[key] = nil;
                 @childs.sort;
-                _child.setParent(nil);
+                _child.setParent(NULL);
             end
         end
     end
