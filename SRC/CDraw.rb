@@ -107,6 +107,7 @@ class CDraw < CView
         end
 
         UpdateChildPosition()
-        blit
+		# That function so slow, if we update everyframe
+        #blit
     end
 end
