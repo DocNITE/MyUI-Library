@@ -68,9 +68,7 @@ class CDraw < CView
         # clear previous text
         tBmp.clear
         # redraw
-        if tBmp.font != @font
-            tBmp.font = font;
-        end
+        tBmp.font = font;
 
 		tBmp.draw_text(0, 0, @size.x, @size.y, @text, alligment)
     end
@@ -91,23 +89,29 @@ class CDraw < CView
     #--------------------------------------------------
     # * ...
     #--------------------------------------------------
+    def color=(_col)
+        @sprite.color = _col;
+        @color = _col;
+        @font.color = @color;
+        blit
+    end
     def text=(_text)
         @text = _text;
         blit
     end
-    def position=(_coord)
-        if @parent == NULL || @parent == nil
-            @sprite.x = _coord.x;
-            @sprite.y = _coord.y;
-            @position = _coord;
-        else
-            @sprite.x = @parent.sprite.x + _coord.x;
-            @sprite.y = @parent.sprite.y + _coord.y;
-            @position = _coord;
-        end
-
-        UpdateChildPosition()
-		# That function so slow, if we update everyframe
-        #blit
-    end
+    #def position=(_coord)
+    #    if @parent == NULL || @parent == nil
+    #        @sprite.x = _coord.x;
+    #        @sprite.y = _coord.y;
+    #        @position = _coord;
+    #    else
+    #        @sprite.x = @parent.sprite.x + _coord.x;
+    #        @sprite.y = @parent.sprite.y + _coord.y;
+    #        @position = _coord;
+    #    end
+    #
+    #    UpdateChildPosition()
+	#	# That function so slow, if we update everyframe
+    #    #blit
+    #end
 end

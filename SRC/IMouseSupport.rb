@@ -63,6 +63,7 @@ end
 # Mouse
 $PreviousElement = nil;
 $PreviousButton = false;
+$PreviousFocus = nil;
 MAX_UI_MD_ELEMENTS = 64;
 module MouseDetector
 
@@ -141,14 +142,17 @@ class Scene_Base
         if local_Element == -1 || local_Element == $GlobalButtonNotEditPls
             if $PreviousElement != nil
                 $PreviousElement.update([3, MouseDetector::MB_IDLE]);
+                EventSDK.callEvent("onMouseLostFocus", $PreviousElement);
                 $PreviousElement = nil;
                 $PreviousButton = false;
             end
+            $PreviousFocus = nil;
             return
         end
 
         if $PreviousElement != nil && $PreviousElement != local_Element
             $PreviousElement.update([3, MouseDetector::MB_IDLE]);
+            EventSDK.callEvent("onMouseLostFocus", $PreviousElement);
             $PreviousElement = nil;
             $PreviousButton = false;
         end
@@ -179,6 +183,10 @@ class Scene_Base
             local_Element.update([local_Id, MouseDetector::MB_PRESSED]);
         else
             local_Element.update([local_Id, MouseDetector::MB_FOCUSED]);
+            if $PreviousFocus != local_Element
+                EventSDK.callEvent("onMouseTakeFocus", local_Element);
+                $PreviousFocus = local_Element
+            end
         end
 
         $PreviousElement = local_Element;

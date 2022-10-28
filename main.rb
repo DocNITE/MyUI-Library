@@ -37,9 +37,9 @@ import("SRC/CDraw.rb");
 # * UI
 #---------------------------------------------------------
 import("SRC/CElement.rb");
-import("SRC/CWindow.rb");
 import("SRC/CButton.rb");
 import("SRC/CProgressBar.rb");
+import("SRC/CWindow.rb");
 
 #---------------------------------------------------------
 # * EXAMPLES/TEST
