@@ -220,5 +220,5 @@ class CWindow < CElement
     end
 end
 
-$GlovalWinTest = CWindow.new(CVector2.new(200,160), "'Write your title'", true, true);
+#$GlovalWinTest = CWindow.new(CVector2.new(200,160), "'Write your title'", true, true);
 #Все работает заебись. Надо только пофиксить CView с его позишен
