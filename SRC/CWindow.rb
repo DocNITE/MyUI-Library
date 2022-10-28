@@ -6,9 +6,65 @@
 #  This file contain class object                        
 #==============================================================================
 
+module Math
+
+    def self.clamp(_value, _min=0, _max=65536)
+        return [[_min, _value].max], _max].min
+    end
+
+    def self.map(x, in_min, in_max, out_min, out_max)
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    end
+
+end
+
 module ViewSDK
 
     DEFAULT_WINDOW_Z = 1125
+
+    def self.makeWindowBitmap(obj)
+        winBitmap = Cache.normal_bitmap("Graphics/System/Window");
+        cursorPos = CVector2.new(0, 0);
+        #currColor = -1;
+        currSide  = 1;
+        isdone    = false;
+        #1------8-------4
+        #|              |
+        #5              7
+        #|              |
+        #2-------6------3
+        while !isdone
+            case currSide
+            when 1
+                obj.bitmap.blt(cursorPos.x, cursorPos.x, winBitmap, Rect.new(64, 0, 16, 16))
+                cursorPos.x = 0;
+                cursorPos.y = obj.height-16;
+            when 2
+                obj.bitmap.blt(cursorPos.x, cursorPos.x, winBitmap, Rect.new(64, 64 - 16, 16, 16))
+                cursorPos.x = obj.width-16;
+                cursorPos.y = obj.height-16;
+            when 3
+                obj.bitmap.blt(cursorPos.x, cursorPos.x, winBitmap, Rect.new(128 - 16, 64 - 16, 16, 16))
+                cursorPos.x = obj.width-16;
+                cursorPos.y = 0;
+            when 4
+                obj.bitmap.blt(cursorPos.x, cursorPos.x, winBitmap, Rect.new(128 - 16, 0, 16, 16))
+                cursorPos.x = 0;
+                cursorPos.y = 16;
+            when 5
+                #№obj.bitmap.blt(cursorPos.x, cursorPos.x, winBitmap, Rect.new(128 - 16, 0, 16, 16))
+                #№cursorPos.x = 0;
+                ##cursorPos.y = 16;
+            when 6
+            when 7
+            when 8
+
+                isdone = true;
+            end
+
+            currSide += 1;
+        end
+    end
 
 end
 
@@ -31,8 +87,6 @@ class CWindow < CElement
 
         @moveable = _moveable;
 
-        @background = Window_Base.new(0, 0, _size.x, _size.y);
-
         newFont = Font.new()
         newFont.name = System_Settings::MESSAGE_WINDOW_FONT_NAME
         newFont.bold = false
@@ -40,13 +94,16 @@ class CWindow < CElement
         newFont.outline = false
         newFont.color = Color.new(255, 255, 255, 255);
 
+        # Private
         @pX = 0;
         @pY = 0;
         @canRender = false;
 
         #@sprite.bitmap = Cache.normal_bitmap("Graphics/System/Window") 
         #@sprite.bitmap = Cache.normal_bitmap("#{MYUI_FOLDER}SRC/EX/window");
-        @sprite.bitmap = Bitmap.new(32, 32);
+        @sprite.bitmap = Bitmap.new(_size.x, _size.y);
+        
+        #Build win tex
 
         @close = CButton.new(CVector2.new(20, 20), false, false, false, _z + 1);
 
@@ -70,7 +127,7 @@ class CWindow < CElement
             @close.visible = false
         end
 
-        @title = CDraw.new(CVector2.new(180, 10), "Window Moveable Test", _z + 1);
+        @title = CDraw.new(CVector2.new(180, 14), "", _z + 1);
         @title.setPosition(2, 2);
         @title.font = newFont;
         @title.text = _title
@@ -89,54 +146,51 @@ class CWindow < CElement
     def dispose
         self.dispose
     end
-
-    def OnClose(arg)
+    #--------------------------------------------------
+    # * CWindow element events
+    #--------------------------------------------------
+    def OnWinClose(arg)
         if arg[1] == @close
             #msgbox "ts"
             self.visible = false;
         end
     end
 
-    def OnPressedMovement(arg)
+    def OnWinPressedMovement(arg)
         if arg[1] == self
             @canRender = true
-            @pX = Mouse.pos?[0] - @position.x;
-            @pY = Mouse.pos?[1] - @position.y;
+            @pX = Mouse.pos?[MX] - @sprite.x;
+            @pY = Mouse.pos?[MY] - @sprite.y;
         end
     end
 
-    def OnRealeseMovement(arg)
+    def OnWinRealeseMovement(arg)
         if arg[1] == self
             @canRender = false
         end
     end
 
-    def OnRender(arg)
+    def OnWinRender(arg)
         if @canRender == true && @moveable == true
-            #prp "Can Movveeee", 5
-            self.position = CVector2.new(Mouse.pos?[0]-@pX, Mouse.pos?[1]-@pY);
+            mResX = Mouse.pos?[MX]-@pY;
+            mResY = Mouse.pos?[MY]-@pY;
+            if @parent == NULL || @parent == nil
+                mResX = Math.clamp(mResX, 0, Graphics.width-@size.x);
+                mResY = Math.clamp(mResY, 0, Graphics.height-@size.y);
+            else
+                mResX = Mouse.pos?[MX]-@sprite.x-@pY;
+                mResY = Mouse.pos?[MY]-@sprite.y-@pY;
+                mResX = Math.clamp(mResX, 0, @parent.size.x-@size.x);
+                mResY = Math.clamp(mResY, 0, @parent.size.y-@size.y);
+            end
+            self.position = CVector2.new(mResX, mResY);
         end
     end
-
+    #--------------------------------------------------
+    # * ...
+    #--------------------------------------------------
     def moveable=(_toggle)
         @moveable = _toggle;
-    end
-    def position=(_coord)
-        if @parent == NULL || @parent == nil
-            @sprite.x = _coord.x;
-            @sprite.y = _coord.y;
-            @background.x = _coord.x;
-            @background.y = _coord.y;
-            @position = _coord;
-        else
-            @sprite.x = @parent.sprite.x + _coord.x;
-            @sprite.y = @parent.sprite.y + _coord.y;
-            @background.x = @parent.sprite.x + _coord.x;
-            @background.y = @parent.sprite.y + _coord.y;
-            @position = _coord;
-        end
-
-        UpdateChildPosition()
     end
 end
 
