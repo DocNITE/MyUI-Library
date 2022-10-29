@@ -26,7 +26,7 @@ module ViewSDK
     IDLE_COLOR  = Color.new(255, 255, 255, 255)
 
     def self.makeWindowBitmap(obj)
-        winBitmap = Cache.normal_bitmap("Graphics/System/Window");
+        winBitmap = Cache.normal_bitmap("#{MYUI_FOLDER}TEX/Window");
         cursorPos = CVector2.new(0, 0);
         #currColor = -1;
         currSide  = 1;
@@ -39,37 +39,41 @@ module ViewSDK
         while !isdone
             case currSide
             when 1
-                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(64, 0, 16, 16))
+                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(0, 0, 16, 16))
                 cursorPos.x = 0;
                 cursorPos.y = obj.height-16;
             when 2
-                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(64, 64 - 16, 16, 16))
+                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(0, 64-16, 16, 16))
                 cursorPos.x = obj.width-16;
                 cursorPos.y = obj.height-16;
             when 3
-                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(128 - 16, 64 - 16, 16, 16))
+                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(64 - 16, 64 - 16, 16, 16))
                 cursorPos.x = obj.width-16;
                 cursorPos.y = 0;
             when 4
-                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(128 - 16, 0, 16, 16))
+                obj.bitmap.blt(cursorPos.x, cursorPos.y, winBitmap, Rect.new(64 - 16, 0, 16, 16))
                 cursorPos.x = 0;
                 cursorPos.y = 16;
             when 5
-                for y in 0..obj.bitmap.height-32 do
-                    obj.bitmap.blt(0, cursorPos.y, winBitmap, Rect.new(64, 16, 16, 1));
-                    obj.bitmap.blt(obj.bitmap.width-16, cursorPos.y, winBitmap, Rect.new(128-16, 16, 16, 1));
+                for y in 0..obj.bitmap.height-33 do
+                    obj.bitmap.blt(0, cursorPos.y, winBitmap, Rect.new(0, 16, 16, 1));
+                    obj.bitmap.blt(obj.bitmap.width-16, cursorPos.y, winBitmap, Rect.new(64-16, 16, 16, 1));
                     cursorPos.y += 1;
                 end
                 cursorPos.x = 16;
                 cursorPos.y = 0;
             when 6
-                for x in 0..obj.bitmap.width-32 do
-                    obj.bitmap.blt(cursorPos.x, 0, winBitmap, Rect.new(64+16, 0, 1, 16));
-                    obj.bitmap.blt(cursorPos.x, obj.bitmap.height-16, winBitmap, Rect.new(64+16, 64-16, 1, 16));
+                for x in 0..obj.bitmap.width-33 do
+                    obj.bitmap.blt(cursorPos.x, 0, winBitmap, Rect.new(0+16, 0, 1, 16));
+                    obj.bitmap.blt(cursorPos.x, obj.bitmap.height-16, winBitmap, Rect.new(0+16, 64-16, 1, 16));
                     cursorPos.x += 1;
                 end
                 cursorPos.x = 0;
                 cursorPos.y = 0;
+
+                local_col = obj.bitmap.get_pixel(15, 15);
+                obj.bitmap.fill_rect(16, 16, obj.bitmap.width-32, obj.bitmap.height-32, local_col)
+
                 isdone = true;
             end
 
@@ -177,6 +181,9 @@ class CWindow < CElement
         end
     end
     def OnWinLostFocus(element)
+        if element == self
+            @canRender = false
+        end
         if element == @close
             @close.childs[0].color = Color.new(255, 255, 255, 255) if @close.childs[0].color != ViewSDK::IDLE_COLOR;
         end

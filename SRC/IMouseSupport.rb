@@ -61,6 +61,7 @@ module EventSDK
 end
 
 # Mouse
+$PreviousElementPre = nil;
 $PreviousElement = nil;
 $PreviousButton = false;
 $PreviousFocus = nil;
@@ -164,6 +165,10 @@ class Scene_Base
                 EventSDK.callEvent("onMouseFocus", [true, local_Id, local_Element]);
             else
                 EventSDK.callEvent("onMouseFocus", [false, local_Id, local_Element]);
+                if $PreviousButton == true
+                    $PreviousButton = false
+                    EventSDK.callEvent("onMouseRealese", [$PreviousElement.prevMbId[0], $PreviousElement]);
+                end
             end
         else
             if $PreviousElement.prevMbId[1] == MouseDetector::MB_PRESSED
