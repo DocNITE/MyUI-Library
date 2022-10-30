@@ -20,7 +20,7 @@ class CButton < CElement
     # * Constructor
     #--------------------------------------------------
     def initialize(_size, _idle=false, _focus=false, _pressed=false, _z = System_Settings::MAP_HUD_Z)
-        super(_size, _z)
+        super(_size, false, _z)
         # Texture
         @idleTex    = _idle
         @focusTex   = _focus

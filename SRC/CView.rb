@@ -37,6 +37,7 @@ class CView < CBase
         @opacity    = 1;
         # Define sprite
         @sprite        = Sprite.new();
+        @sprite.bitmap = Bitmap.new(4, 4);
         @sprite.x      = 0;
         @sprite.y      = 0;
         @sprite.z      = _z;

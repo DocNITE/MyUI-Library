@@ -26,6 +26,7 @@ module ViewSDK
     IDLE_COLOR  = Color.new(255, 255, 255, 255)
 
     def self.makeWindowBitmap(obj)
+        obj.bitmap.clear
         winBitmap = Cache.normal_bitmap("#{MYUI_FOLDER}TEX/Window");
         cursorPos = CVector2.new(0, 0);
         #currColor = -1;
@@ -98,9 +99,9 @@ class CWindow < CElement
     # * Constructor
     #--------------------------------------------------
     def initialize(_size, _title="", _close=false, _moveable = true, _z = ViewSDK::DEFAULT_WINDOW_Z)
-        super(_size, _z)
+        super(_size, _moveable, _z)
 
-        @moveable = _moveable;
+        #@moveable = _moveable;
 
         newFont = Font.new()
         newFont.name = System_Settings::MESSAGE_WINDOW_FONT_NAME
@@ -153,9 +154,6 @@ class CWindow < CElement
         EventSDK.addEvent("onMouseTakeFocus",   method(:OnWinTakeFocus))
         EventSDK.addEvent("onMouseLostFocus",   method(:OnWinLostFocus))
         EventSDK.addEvent("onMouseRealese", method(:OnWinClose))
-        EventSDK.addEvent("onMousePressed", method(:OnWinPressedMovement))
-        EventSDK.addEvent("onMouseRealese", method(:OnWinRealeseMovement))
-        EventSDK.addEvent("onRender",       method(:OnWinRender))
 
         @prevMbId   = -1;
     end
@@ -188,43 +186,9 @@ class CWindow < CElement
             @close.childs[0].color = Color.new(255, 255, 255, 255) if @close.childs[0].color != ViewSDK::IDLE_COLOR;
         end
     end
-
-    def OnWinPressedMovement(arg)
-        if arg[1] == self
-            @canRender = true
-            @pX = Mouse.pos?[MX] - @sprite.x;
-            @pY = Mouse.pos?[MY] - @sprite.y;
-        end
-    end
-
-    def OnWinRealeseMovement(arg)
-        if arg[1] == self
-            @canRender = false
-        end
-    end
-
-    def OnWinRender(arg)
-        if @canRender == true && @moveable == true
-            mResX = Mouse.pos?[MX]-@pX;
-            mResY = Mouse.pos?[MY]-@pY;
-            if @parent == NULL || @parent == nil
-                mResX = Math.clamp(mResX, 0, Graphics.width-@size.x);
-                mResY = Math.clamp(mResY, 0, Graphics.height-@size.y);
-            else
-                mResX = Mouse.pos?[MX]-@sprite.x-@pY;
-                mResY = Mouse.pos?[MY]-@sprite.y-@pY;
-                mResX = Math.clamp(mResX, 0, @parent.size.x-@size.x);
-                mResY = Math.clamp(mResY, 0, @parent.size.y-@size.y);
-            end
-            self.position = CVector2.new(mResX, mResY);
-        end
-    end
     #--------------------------------------------------
     # * ...
     #--------------------------------------------------
-    def moveable=(_toggle)
-        @moveable = _toggle;
-    end
 end
 
 #$GlovalWinTest = CWindow.new(CVector2.new(200,160), "'Write your title'", true, true);
