@@ -93,7 +93,6 @@ class CWindow < CElement
     #--------------------------------------------------
     attr_reader :close;
     attr_reader :title;
-    attr_reader :background;
     #--------------------------------------------------
     # * Constructor
     #--------------------------------------------------
