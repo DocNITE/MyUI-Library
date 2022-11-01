@@ -10,7 +10,7 @@
 MYUI_NAME          = "MyUI Library";
 MYUI_FOLDER        = "ModScripts/_Mods/" + MYUI_NAME + "/";
 
-MYUI_VERSION = "0.1"
+MYUI_VERSION = "0.2"
 
 # include script file
 def import(file)
