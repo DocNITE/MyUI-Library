@@ -1,1 +1,5 @@
-Just small UI/HUD library
+Author: DocNight (amitabha)
+Version: 0.2
+
+GUI Framework.
+Used for mods/for easy make UI in game

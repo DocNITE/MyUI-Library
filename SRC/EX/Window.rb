@@ -1,3 +1,5 @@
+# OLD AND SHITY CODE
+
 $FuckWindow = CWindow.new("Window Test", true, 1125)
 #$FuckWindow.setPosition(200, 40)
 
